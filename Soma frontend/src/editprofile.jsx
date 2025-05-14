@@ -10,7 +10,6 @@ const EditProfile = () => {
   const [preview, setPreview] = useState("");
   const [message, setMessage] = useState("");
 
-  // Fetch user data on mount
   useEffect(() => {
     fetch("http://localhost:5001/user/profile", { credentials: "include" })
       .then((res) => res.json())

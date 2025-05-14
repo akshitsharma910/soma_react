@@ -23,45 +23,53 @@ const ShowPost = ({ currentUser }) => {
   }, [id]);
 
   // Delete post
-  const handleDeletePost = async () => {
-    if (!window.confirm("Are you sure you want to delete this post?")) return;
-    const res = await fetch(`http://localhost:5001/posts/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (res.ok) {
-      alert("Post deleted successfully!");
-      navigate("/");
-    } else {
-      alert("Failed to delete post.");
-    }
-  };
+ const handleDeletePost = async () => {
+  if (!window.confirm("Are you sure you want to delete this post?")) return;
+  const res = await fetch(`http://localhost:5001/posts/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (res.ok) {
+    alert("Post deleted successfully!");
+    navigate("/");
+  } else {
+    alert("Failed to delete post.");
+  }
+};
 
-  // Upvote
-  const handleUpvote = async () => {
-    const res = await fetch(`http://localhost:5001/posts/${id}/upvote`, {
-      method: "POST",
-      credentials: "include",
-    });
-    if (res.ok) {
-      // Refetch post
-      const data = await res.json();
-      setPost(prev => ({ ...prev, upvotes: data.upvotes || prev.upvotes }));
-    }
-  };
 
-  // Downvote
-  const handleDownvote = async () => {
-    const res = await fetch(`http://localhost:5001/posts/${id}/downvote`, {
-      method: "POST",
-      credentials: "include",
-    });
-    if (res.ok) {
-      // Refetch post
-      const data = await res.json();
-      setPost(prev => ({ ...prev, downvotes: data.downvotes || prev.downvotes }));
-    }
-  };
+ // Upvote
+const handleUpvote = async () => {
+  const res = await fetch(`http://localhost:5001/posts/${id}/upvote`, {
+    method: "POST",
+    credentials: "include",
+  });
+  if (res.ok) {
+    const updatedPost = await res.json();
+    setPost(prev => ({
+      ...prev,
+      upvotes: updatedPost.upvotes,
+      downvotes: updatedPost.downvotes
+    }));
+  }
+};
+
+// Downvote
+const handleDownvote = async () => {
+  const res = await fetch(`http://localhost:5001/posts/${id}/downvote`, {
+    method: "POST",
+    credentials: "include",
+  });
+  if (res.ok) {
+    const updatedPost = await res.json();
+    setPost(prev => ({
+      ...prev,
+      upvotes: updatedPost.upvotes,
+      downvotes: updatedPost.downvotes
+    }));
+  }
+};
+
 
   // Add comment
   const handleAddComment = async (e) => {
@@ -84,6 +92,7 @@ const ShowPost = ({ currentUser }) => {
 
   // Delete comment
   const handleDeleteComment = async (commentId) => {
+
     if (!window.confirm("Are you sure you want to delete this comment?")) return;
     const res = await fetch(`http://localhost:5001/posts/${id}/comment/${commentId}`, {
       method: "DELETE",
@@ -109,6 +118,7 @@ const ShowPost = ({ currentUser }) => {
           Author: {post.author ? post.author : "Unknown"}
         </p>
         <p className="content">{post.content}</p>
+        
         {currentUser && post.authorId === currentUser.id && (
           <button
             onClick={handleDeletePost}
@@ -119,8 +129,8 @@ const ShowPost = ({ currentUser }) => {
         )}
       </div>
 
-      <p className="badge border views-color mt-4">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
+      <p className="badge border views-color mt-4 text-black">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" className="bi bi-eye" viewBox="0 0 16 16">
           <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
           <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
         </svg> {post.views}
@@ -143,7 +153,7 @@ const ShowPost = ({ currentUser }) => {
         </button>
       </div>
 
-      <div className="container mt-3 post-container col-5 mt-2 py-3 border-top">
+      <div className="container mt-3 post-container col-15 mt-2 py-3 border-top">
         <h3 className="text-secondary" id="comment-length">
           Comments ({comments.length})
         </h3>

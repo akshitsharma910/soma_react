@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 const ProfilePage = ({ user }) => {
   const navigate = useNavigate();
 
-  // Dummy data for articles, followers, and rating
-  // Replace with real data from your backend as needed
+
   const articles = user.articlesCount || 41;
   const followers = user.followersCount || 976;
   const rating = user.rating || 8.5;

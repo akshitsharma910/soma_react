@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Sidebar from "./partials/sidebar";
 import Navbar from "./partials/navbar";
 
 const HomePage = () => {

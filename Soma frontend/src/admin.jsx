@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   // Delete user
   const handleDelete = async (userId) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
-    const res = await fetch("http://localhost:5001/admin/users/" + userId, {
+    const res = await fetch("http://localhost:5001/admin/manageUser/" + userId, {
       method: "DELETE",
       credentials: "include",
     });
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   // Edit user
   const handleEdit = async (userId) => {
     const fields = editFields[userId] || {};
-    const res = await fetch("http://localhost:5001/admin/users/" + userId, {
+    const res = await fetch("http://localhost:5001/admin/manageUser/" + userId, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

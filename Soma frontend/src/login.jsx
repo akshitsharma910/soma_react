@@ -22,7 +22,6 @@ const LoginPage = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        // You can redirect to home or profile after login
         navigate("/");
       } else {
         setError(data.message || "Login failed");
